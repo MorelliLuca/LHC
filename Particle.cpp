@@ -102,7 +102,7 @@ std::ostream &operator<<(std::ostream &os, Particle const &particle) {
   return os;
 }
 
-int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
+int Particle::decay2body(Particle &dau1, Particle &dau2) const {
   if (getMass() == 0.0) {
     std::cout << "Decayment cannot be preformed if mass is zero\n";
     return 1;
@@ -159,13 +159,13 @@ int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
   double by = Py_ / energy;
   double bz = Pz_ / energy;
 
-  dau1.Boost(bx, by, bz);
-  dau2.Boost(bx, by, bz);
+  dau1.boost(bx, by, bz);
+  dau2.boost(bx, by, bz);
 
   return 0;
 }
 
-void Particle::Boost(double bx, double by, double bz) {
+void Particle::boost(double bx, double by, double bz) {
   double energy = getEnergy();
 
   // Boost this Lorentz vector

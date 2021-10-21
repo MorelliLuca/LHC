@@ -16,7 +16,7 @@ class Particle {
   double Px_, Py_, Pz_;
 
   static int findParticle(std::string pName);
-  void Boost(double bx, double by, double bz);
+  void boost(double bx, double by, double bz);
 
  public:
   Particle() : index_{-1}, Px_{0}, Py_{0}, Pz_{0} {}
@@ -35,7 +35,7 @@ class Particle {
   double getEnergy() const;
   double invMass(Particle const &particle2) const;
   void setP(double Px, double Py, double Pz);
-  int Decay2body(Particle &dau1, Particle &dau2) const;
+  int decay2body(Particle &dau1, Particle &dau2) const;
 };
 
 std::ostream &operator<<(std::ostream &os, Particle const &particle);

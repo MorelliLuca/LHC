@@ -33,3 +33,10 @@
 
 # vs code stupid files
 .vscode
+
+# Root precompiled files
+*.pcm
+*.cxx
+*.h
+*.in
+Main_cpp_ACLiC_maincpp
