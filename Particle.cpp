@@ -81,6 +81,7 @@ double Particle::getPx() const { return Px_; }
 double Particle::getPy() const { return Py_; }
 double Particle::getPz() const { return Pz_; }
 double Particle::getMass() const { return particleType_[index_]->getMass(); }
+int Particle::getCharge() const { return particleType_[index_]->getCharge(); }
 double Particle::getEnergy() const {
   return sqrt(getMass() * getMass() + Px_ * Px_ + Py_ * Py_ + Pz_ * Pz_);
 }

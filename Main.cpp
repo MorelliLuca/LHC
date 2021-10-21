@@ -32,18 +32,25 @@ gStyle->SetHistFillColor(kCyan);
   decParticles.reserve(20);
 
   TH1F* hPType{new TH1F("hPType","Types of particles generated",7,0,7)};
-  TH1F* hTheta{new TH1F("hTheta","Theta distrubtion",100,0,M_PI)};
+  TH1F* hTheta{new TH1F("hTheta","Theta distriubtion",100,0,M_PI)};
   TH1F* hPhi{new TH1F("hPhi","Phi distribution",100,0,2*M_PI)};
   TH1F* hP{new TH1F("hP","Momentum distribution",100,0,5)};
-  TH1F* hPTras{new TH1F("hPtras","Trasversal Momentium distribution",1000,0,5)};
+  TH1F* hPTras{new TH1F("hPtras","Trasversal Momentum distribution",1000,0,5)};
   TH1F* hEnergy{new TH1F("hTEnergy","Energy Distribution",1000,0,5)};
+  TH1F* hInvMass{new TH1F("hInvMass","Invariant mass",100,0,5)};
+  TH1F* hInvMSame{new TH1F("hInvMSame","Invariant mass calculated with same charge particles",100,0,5)};
+  TH1F* hInvMOpp{new TH1F("hInvMOpp","Invariant mass calculated with opposite charge particles",100,0,5)};
+  TH1F* hInvMPKSame{new TH1F("hInvMPKSame","Invariant mass calculated with same charge Kaons and Pions",100,0,5)};
+  TH1F* hInvMPKOpp{new TH1F("hInvMPKOpp","Invariant mass calculated with opposite charge Kaons and Pions",100,0,5)};
+  TH1F* hInvMDec{new TH1F("hInvMDec","Invariant mass calculated with particles from decayment",100,0,5)};
 
-  hPType->GetXaxis()->SetBinLabel(1,"Pione +");
-  hPType->GetXaxis()->SetBinLabel(2,"Pione -");
-  hPType->GetXaxis()->SetBinLabel(3,"Kaone +");
-  hPType->GetXaxis()->SetBinLabel(4,"Kaone -");
-  hPType->GetXaxis()->SetBinLabel(5,"Protone +");
-  hPType->GetXaxis()->SetBinLabel(6,"Protone -");
+
+  hPType->GetXaxis()->SetBinLabel(1,"Pions +");
+  hPType->GetXaxis()->SetBinLabel(2,"Pions -");
+  hPType->GetXaxis()->SetBinLabel(3,"Kaons +");
+  hPType->GetXaxis()->SetBinLabel(4,"Kaons -");
+  hPType->GetXaxis()->SetBinLabel(5,"Protons +");
+  hPType->GetXaxis()->SetBinLabel(6,"Protons -");
   hPType->GetXaxis()->SetBinLabel(7,"K*");
   
   hPType->SetXTitle("Particle Type");
@@ -58,6 +65,18 @@ gStyle->SetHistFillColor(kCyan);
   hPTras->SetYTitle("Occurrences");
   hEnergy->SetXTitle("Energy [GeV]");
   hEnergy->SetYTitle("Occurrences");
+  hInvMass->SetXTitle("Mass [GeV/C^2]");
+  hInvMass->SetYTitle("Occurrences");
+  hInvMOpp->SetXTitle("Mass [GeV/C^2]");
+  hInvMOpp->SetYTitle("Occurrences");
+  hInvMSame->SetXTitle("Mass [GeV/C^2]");
+  hInvMSame->SetYTitle("Occurrences");
+  hInvMPKSame->SetXTitle("Mass [GeV/C^2]");
+  hInvMPKSame->SetYTitle("Occurrences");
+  hInvMPKOpp->SetXTitle("Mass [GeV/C^2]");
+  hInvMPKOpp->SetYTitle("Occurrences");
+  hInvMDec->SetXTitle("Mass [GeV/C^2]");
+  hInvMDec->SetYTitle("Occurrences");
 
   gRandom->SetSeed();
 
@@ -117,9 +136,28 @@ gStyle->SetHistFillColor(kCyan);
       hEnergy->Fill(it.getEnergy());
 
     }
-    for(auto& it : genParticles){
-      
+    genParticles.insert(genParticles.end(),decParticles.begin(),decParticles.end());
+    
+    for(auto p1{genParticles.begin()};p1!=genParticles.end();++p1){
+      for(auto p2{++p1};p2!=genParticles.end();++p2)
+      {
+        hInvMass->Fill(p1->invMass(*p2));
+        if(p1->getCharge()*p2->getCharge()>0){
+          hInvMSame->Fill(p1->invMass(*p2));
+          if(p1->getMass()+p2->getMass()==0.63324) hInvMPKSame->Fill(p1->invMass(*p2));
+        } 
+        if(p1->getCharge()*p2->getCharge()<0) {
+          hInvMOpp->Fill(p1->invMass(*p2));
+          if(p1->getMass()+p2->getMass()==0.63324) hInvMPKOpp->Fill(p1->invMass(*p2));
+        }
+      }
     }
+
+    for(auto p{decParticles.begin()};p!=decParticles.end();++p)
+    {
+        hInvMDec->Fill(p->invMass(*(++p)));
+    }
+
     genParticles.clear();
     decParticles.clear();
 
@@ -137,6 +175,12 @@ gStyle->SetHistFillColor(kCyan);
   hP->Write();
   hPTras->Write();
   hEnergy->Write();
+  hInvMass->Write();
+  hInvMOpp->Write();
+  hInvMSame->Write();
+  hInvMPKSame->Write();
+  hInvMPKOpp->Write();
+  hInvMDec->Write();
   
   output->ls();
 
