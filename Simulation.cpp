@@ -18,6 +18,8 @@
 
 
 #include <vector>
+#include <iostream>
+#include <iomanip>
 
 #include "Particle.hpp"
 #include "ParticleType.hpp"
@@ -33,6 +35,19 @@
 R__LOAD_LIBRARY(ParticleType_cpp.so)
 R__LOAD_LIBRARY(ResonanceType_cpp.so)
 R__LOAD_LIBRARY(Particle_cpp.so)
+
+//ProgressBar function - prints a progress bar during execution
+void progressBar(double status, double max){
+  std::cout<<"\033[34m"<<std::fixed<<std::setprecision(0)<<status/max*100<<"%\033[0m|";
+  for(double i{0};i!=30;++i)
+  {
+    if(status/max<i/30.) std::cout<<" ";
+    else std::cout<<"\033[7;32m \033[0m";
+  }
+  if(status!=max-1) std::cout<<"|\r";
+  else std::cout<<"|\n";
+}
+
 
 //Simulation
 void simulate() {
@@ -166,7 +181,7 @@ gStyle->SetHistFillColor(kCyan);
       //Adding the new particle to genParticles
       genParticles.push_back(newParticle);
     }
-    
+
     //Adding decayment results at the end of genParticles
     genParticles.insert(genParticles.end(),decParticles.begin(),decParticles.end());
     
@@ -175,7 +190,7 @@ gStyle->SetHistFillColor(kCyan);
       hPType->Fill(p1->getIndex());
       hPTras->Fill(sqrt(p1->getPx()*p1->getPx()+p1->getPy()*p1->getPy()));
       hEnergy->Fill(p1->getEnergy());
-      for(auto p2{++p1};p2!=genParticles.end();++p2)
+      for(auto p2{p1+1};p2!=genParticles.end();++p2)
       {
         hInvMass->Fill(p1->invMass(*p2));
         if(p1->getCharge()*p2->getCharge()>0){
@@ -197,7 +212,8 @@ gStyle->SetHistFillColor(kCyan);
     //Cleating used vector for new Events
     genParticles.clear();
     decParticles.clear();
-
+    
+    progressBar(eventCount,1E5);
 
   }
   
