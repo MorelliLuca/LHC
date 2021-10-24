@@ -180,6 +180,11 @@ gStyle->SetHistFillColor(kCyan);
       }
       //Adding the new particle to genParticles
       genParticles.push_back(newParticle);
+      
+      //Adding data to histos
+      hPType->Fill(newParticle.getIndex());
+      hPTras->Fill(sqrt(newParticle.getPx()*newParticle.getPx()+newParticle.getPy()*newParticle.getPy()));
+      hEnergy->Fill(newParticle.getEnergy());
     }
 
     //Adding decayment results at the end of genParticles
@@ -187,9 +192,6 @@ gStyle->SetHistFillColor(kCyan);
     
     //Filling histos with data
     for(auto p1{genParticles.begin()};p1!=genParticles.end();++p1){
-      hPType->Fill(p1->getIndex());
-      hPTras->Fill(sqrt(p1->getPx()*p1->getPx()+p1->getPy()*p1->getPy()));
-      hEnergy->Fill(p1->getEnergy());
       for(auto p2{p1+1};p2!=genParticles.end();++p2)
       {
         hInvMass->Fill(p1->invMass(*p2));
