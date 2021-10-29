@@ -30,6 +30,7 @@ TCanvas* cFitTheta = new TCanvas("cFitTheta","Fit Theta distribution");
 TCanvas* cFitP = new TCanvas("cFitP","Fit P distribution");
 TCanvas* cSubPK = new TCanvas("cSubPK","Subtraction of invariant mass of Kaons and Pions Same and Opposite charge");
 TCanvas* cSub = new TCanvas("cSub","Subtraction of invariant mass of particles of Same and Opposite charge");
+TCanvas* cComp = new TCanvas("cComp","Comparison");
 
 std::cout<<"Pions+:"<<hPType->GetBinContent(1)/hPType->GetEntries()*100<<"%\n"
          <<"Pions-:"<<hPType->GetBinContent(2)/hPType->GetEntries()*100<<"%\n"
@@ -63,7 +64,6 @@ hSub->SetXTitle("Mass [GeV/C^2]");
 hSub->SetYTitle("Occurrences");
 hSub->SetAxisRange(0.65,1.4);
 
-
 cFitPhi->cd();
 hPhi->DrawCopy();
 cFitTheta->cd();
@@ -74,6 +74,11 @@ cSubPK->cd();
 hSubPK->DrawCopy();
 cSub->cd();
 hSub->DrawCopy();
+cComp->cd();
+
+hSubPK->DrawCopy();
+hSub->DrawCopy("SAME");
+hInvMDec->DrawCopy("SAME HISTO");
 
 
 results->Close();
