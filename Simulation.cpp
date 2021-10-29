@@ -55,6 +55,7 @@ void progressBar(double status, double max) {
 // Simulation
 void simulate() {
   // Global style settings for graph
+ 
   gStyle->SetOptStat("emr");
   gStyle->SetHistFillColor(kCyan);
 
@@ -218,17 +219,18 @@ void simulate() {
     for (auto p1{genParticles.begin()}; p1 != genParticles.end(); ++p1) {
       if (p1->getIndex() != 6) {
         for (auto p2{p1 + 1}; p2 != genParticles.end(); ++p2) {
+          double invMass{p1->invMass(*p2)};
           if (p2->getIndex() != 6) {
-            hInvMass->Fill(p1->invMass(*p2));
+            hInvMass->Fill(invMass);
             if (p1->getCharge() * p2->getCharge() > 0) {
-              hInvMSame->Fill(p1->invMass(*p2));
+              hInvMSame->Fill(invMass);
               if (p1->getMass() + p2->getMass() == 0.63324)
-                hInvMPKSame->Fill(p1->invMass(*p2));
+                hInvMPKSame->Fill(invMass);
             }
             if (p1->getCharge() * p2->getCharge() < 0) {
-              hInvMOpp->Fill(p1->invMass(*p2));
+              hInvMOpp->Fill(invMass);
               if (p1->getMass() + p2->getMass() == 0.63324)
-                hInvMPKOpp->Fill(p1->invMass(*p2));
+                hInvMPKOpp->Fill(invMass);
             }
           }
         }
