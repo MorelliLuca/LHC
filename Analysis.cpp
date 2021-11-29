@@ -28,10 +28,9 @@ TH1F* hInvMDec=(TH1F*)results->Get("hInvMDec");
 
 TCanvas* cDis = new TCanvas("cDis","Distributions measured",1500,1000);
 cDis->Divide(2,2);
-TCanvas* cDis2 = new TCanvas("cDis2","Distributions measured",3000 , 500);
-cDis2->Divide(3,1);
-TCanvas* cMass = new TCanvas("cMass","K* Masses");
-cMass->Divide(2,2);
+
+cDis->cd(1);
+hPType->DrawCopy();
 
 
 std::cout<<"Pions+:"<<hPType->GetBinContent(1)<<"+/-"<<hPType->GetBinError(1)<<"\n"
@@ -42,56 +41,65 @@ std::cout<<"Pions+:"<<hPType->GetBinContent(1)<<"+/-"<<hPType->GetBinError(1)<<"
          <<"Protons-:"<<hPType->GetBinContent(6)<<"+/-"<<hPType->GetBinError(7)<<"\n"
          <<"K*"<<hPType->GetBinContent(7)<<"+/-"<<hPType->GetBinError(7)<<"\n";
 
+cDis->cd(3);
 hPhi->Fit("pol0");
+hPhi->DrawCopy();
+
+cDis->cd(4);
 hTheta->Fit("pol0");
+hTheta->DrawCopy();
+
+cDis->cd(2);
 hP->Fit("expo");
+hP->DrawCopy();
+
+
+TCanvas* cMass = new TCanvas("cMass","K* Masses",3000 , 500);
+cMass->Divide(3,1);
+
 
 TH1F* hSubPK{new TH1F(
       "hSubPK", "Subtraction of invariant mass of Kaons and Pions of Same and Opposite charge", 1000,
       0, 5)};
 
+cMass->cd(3);
 hSubPK->Add(hInvMPKOpp,hInvMPKSame,1,-1);  
 hSubPK->Fit("gaus","","",0.5,1.5);
 hSubPK->SetXTitle("Mass [GeV/C^2]");
 hSubPK->SetYTitle("Occurrences");
 hSubPK->SetAxisRange(0.65,1.4);
+hSubPK->DrawCopy();
+
 
 TH1F* hSub{new TH1F(
       "hSub", "Subtraction of invariant mass of particles of Same and Opposite charge", 1000,
       0, 5)};
 
+cMass->cd(2);
 hSub->Add(hInvMOpp,hInvMSame,1,-1);  
 hSub->Fit("gaus","","",0.5,1.5);
 hSub->SetXTitle("Mass [GeV/C^2]");
 hSub->SetYTitle("Occurrences");
 hSub->SetAxisRange(0.65,1.4);
+hSub->DrawCopy();
 
-
+cMass->cd(1);
 hInvMDec->Fit("gaus");
 hInvMDec->SetAxisRange(0.6,1.2);
 hInvMDec->SetFillColor(kCyan);
 hInvMDec->SetLineColor(kAzure+10);
-
-
-cDis->cd(1);
-hPType->DrawCopy();
-cDis->cd(2);
-hP->DrawCopy();
-cDis->cd(3);
-hPhi->DrawCopy();
-cDis->cd(4);
-hTheta->DrawCopy();
-
-cDis2->cd(1);
 hInvMDec->DrawCopy();
-cDis2->cd(2);
-hSub->DrawCopy();
-cDis2->cd(3);
-hSubPK->DrawCopy();
 
 
 
-cDis2->Print("Comparison.png");
+
+
+
+
+
+
+
+cMass->Print("Comparison.png");
 cDis->Print("Distributions.png");
 
 
