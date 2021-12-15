@@ -8,6 +8,7 @@
 void analyze(){
 gStyle->SetOptStat("e");
 gStyle->SetOptFit(1);
+gStyle->SetFitFormat("7.6g");
 gStyle->SetHistFillColor(kCyan);
 gStyle->SetHistLineColor(kAzure+10);
 
@@ -38,7 +39,7 @@ std::cout<<"Pions+:"<<hPType->GetBinContent(1)<<"+/-"<<hPType->GetBinError(1)<<"
          <<"Kaone+:"<<hPType->GetBinContent(3)<<"+/-"<<hPType->GetBinError(3)<<"\n"
          <<"Kaons-:"<<hPType->GetBinContent(4)<<"+/-"<<hPType->GetBinError(4)<<"\n"
          <<"Protons+:"<<hPType->GetBinContent(5)<<"+/-"<<hPType->GetBinError(5)<<"\n"
-         <<"Protons-:"<<hPType->GetBinContent(6)<<"+/-"<<hPType->GetBinError(7)<<"\n"
+         <<"Protons-:"<<hPType->GetBinContent(6)<<"+/-"<<hPType->GetBinError(6)<<"\n"
          <<"K*"<<hPType->GetBinContent(7)<<"+/-"<<hPType->GetBinError(7)<<"\n";
 
 cDis->cd(3);
