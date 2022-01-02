@@ -1,9 +1,9 @@
 // Implementation of ResonanceType.hpp - Luca Morelli 2021
+
 #include "ResonanceType.hpp"
+#include "ParticleType.hpp"
 
 #include <iostream>
-
-#include "ParticleType.hpp"
 
 // Member functions definitions
 void ResonanceType::print() const {

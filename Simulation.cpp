@@ -18,13 +18,13 @@
 //
 // Results are saved in Output.root
 
-#include <iomanip>
-#include <iostream>
-#include <vector>
-
 #include "Particle.hpp"
 #include "ParticleType.hpp"
 #include "ResonanceType.hpp"
+
+#include <iomanip>
+#include <iostream>
+#include <vector>
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TH1F.h"
@@ -52,10 +52,11 @@ void progressBar(double status, double max) {
     std::cout << "|\n";
 }
 
-// Simulation
+/* Simulation */
+
 void simulate() {
   // Global style settings for graph
- 
+
   gStyle->SetOptStat("emr");
   gStyle->SetHistFillColor(kCyan);
 
@@ -155,7 +156,7 @@ void simulate() {
       double theta{gRandom->Uniform(0, M_PI)};
       double modP{gRandom->Exp(1)};
 
-      // Filling momemntum Histos
+      // Filling momentum Histos
       hPhi->Fill(phi);
       hTheta->Fill(theta);
       hP->Fill(modP);
@@ -164,7 +165,7 @@ void simulate() {
       newParticle.setP(modP * sin(theta) * cos(phi),
                        modP * sin(theta) * sin(phi), modP * cos(theta));
 
-      // Radom generation of the type of the new Particle
+      // Random generation of the type of the new Particle
       double rand{gRandom->Uniform(0, 100)};
 
       if (rand <= 1) {
@@ -215,7 +216,7 @@ void simulate() {
     genParticles.insert(genParticles.end(), decParticles.begin(),
                         decParticles.end());
 
-    // Filling histos with data
+    // Filling invarant mass histos with data
     for (auto p1{genParticles.begin()}; p1 != genParticles.end(); ++p1) {
       if (p1->getIndex() != 6) {
         for (auto p2{p1 + 1}; p2 != genParticles.end(); ++p2) {

@@ -1,10 +1,10 @@
 // Header file ResonanceType.hpp - Luca Morelli 2021
+
 #ifndef RESONANCETYPE_HPP
 #define RESONANCETYPE_HPP
+#include "ParticleType.hpp"
 
 #include <string>
-
-#include "ParticleType.hpp"
 
 // ResonanceType class inherits from ParticleType
 class ResonanceType : public ParticleType {
@@ -15,7 +15,7 @@ class ResonanceType : public ParticleType {
   //  Constructor
   ResonanceType(std::string name, double mass, int charge, double width)
       : ParticleType(name, mass, charge), width_{width} {}
-  // Member function
+  // Member functions
   void print() const;
   double getWidth() const;
 };

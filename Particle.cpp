@@ -1,20 +1,22 @@
 // Implementation of Particle.hpp - Luca Morelli 2021
+
 #include "Particle.hpp"
 #include "ParticleType.hpp"
 #include "ResonanceType.hpp"
 
-#include <cmath>    
-#include <cstdlib>  
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
 
-
-//Initialization of static members
+// Initialization of static members
 std::vector<ParticleType *> Particle::particleType_{};
 int Particle::NParticleType_{0};
 
-//Returns the index of a particle or -1 if not found
+/*Member function definitions*/
+
+// Returns the index of a particle or -1 if not found
 int Particle::findParticle(std::string pName) {
   if (NParticleType_ == 0) {
     return -1;
@@ -27,7 +29,7 @@ int Particle::findParticle(std::string pName) {
   return -1;
 }
 
-//Particle constructor definition
+// Particle constructor definition
 Particle::Particle(std::string name, double Px, double Py, double Pz)
     : Px_{Px}, Py_{Py}, Pz_{Pz} {
   index_ = findParticle(name);
@@ -37,7 +39,7 @@ Particle::Particle(std::string name, double Px, double Py, double Pz)
   }
 }
 
-//Adds a new type of particle
+// Adds a new type of particle
 void Particle::addParticleType(std::string name, double mass, int charge,
                                double width) {
   if (NParticleType_ == maxNumParticleType) {
@@ -54,7 +56,7 @@ void Particle::addParticleType(std::string name, double mass, int charge,
   }
 }
 
-//Sets the type of particle of a Particle object using the index of the type
+// Sets the type of particle of a Particle object using the index of the type
 void Particle::setParticle(int index) {
   if (index < NParticleType_ && index != -1) {
     index_ = index;
@@ -63,12 +65,12 @@ void Particle::setParticle(int index) {
               << " is not a particle index alredy defined\n";
   }
 }
-//Sets the type of particle of a Particle object using the name of the type
+// Sets the type of particle of a Particle object using the name of the type
 void Particle::setParticle(std::string name) {
   setParticle(findParticle(name));
 }
 
-//Prints the types of particles already existing
+// Prints the types of particles already existing
 void Particle::printParticleTypes() {
   for (auto &it : particleType_) {
     it->print();
@@ -76,13 +78,13 @@ void Particle::printParticleTypes() {
   }
 }
 
-//Prints the data of a Particle object
+// Prints the data of a Particle object
 void Particle::printDetails() const {
   std::cout << "|Index:" << index_ << "|" << particleType_[index_]->getName()
             << "|Px:" << Px_ << "|Py:" << Py_ << "|Pz:" << Pz_ << '|';
 }
 
-//Gets data member and derived data
+// Gets data member and derived data
 int Particle::getIndex() const { return index_; }
 double Particle::getPx() const { return Px_; }
 double Particle::getPy() const { return Py_; }
@@ -99,20 +101,20 @@ double Particle::invMass(Particle const &p2) const {
   return sqrt(pow(getEnergy() + p2.getEnergy(), 2) - PxTot * PxTot -
               PyTot * PyTot - PzTot * PzTot);
 }
-//Sets momentum vector
+// Sets momentum vector
 void Particle::setP(double Px, double Py, double Pz) {
   Px_ = Px;
   Py_ = Py;
   Pz_ = Pz;
 }
 
-//Operator Overload definition
+// Operator Overload definition
 std::ostream &operator<<(std::ostream &os, Particle const &particle) {
   particle.printDetails();
   return os;
 }
 
-//Management of the decay of a particle
+// Management of the decay of a particle
 int Particle::decay2body(Particle &dau1, Particle &dau2) const {
   if (getMass() == 0.0) {
     std::cout << "Decayment cannot be preformed if mass is zero\n";

@@ -1,3 +1,5 @@
+// Test of ParticleType, ResonanceType and Particle classes - Luca Morelli 2021
+
 #include "ParticleType.hpp"
 #include "ResonanceType.hpp"
 #include "Particle.hpp"
